@@ -8,7 +8,7 @@ const DrawerComponent = ({ show, showDrawer, showIcons, children }) => {
     <>
       <CSSTransition in={show} unmountOnExit timeout={{ enter: 0, exit: 300 }}>
         <div
-          className="drawer fixed  
+          className="drawer absolute  
           inset-0 bg-opacity-50 z-70 opacity-0
            overflow-y-auto h-full w-full transition-all duration-[0.3s]"
         >

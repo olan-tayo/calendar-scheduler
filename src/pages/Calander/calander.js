@@ -79,6 +79,7 @@ const Calander = () => {
   const [event, setEvent] = useState({ client: {}, service: {} });
   const [selectedEvent, setSelectedEvent] = useState();
   const [currentDate, setCurrentDate] = useState(moment());
+  const [showFilter, setShowFilter] = useState(false);
 
   const handleNavigate = (date, view) => {
     setCurrentDate(date);
@@ -233,7 +234,7 @@ const Calander = () => {
 
             {/*  */}
             <div>
-              <div className="h-[40px] w-full px-2 flex  border-[1px] bg-white border-[#bfbfbf] text-sm rounded-[24px] ">
+              <div className="h-[40px] w-full px-2 flex  border-[1px] bg-white border-[#bfbfbf] text-sm rounded-[24px] cursor-pointer">
                 <div className="px-2 border-r-[1px] border-r-[#bfbfbf] flex items-center">
                   <KeyboardArrowLeft
                     onClick={() => handleBack(view)}
@@ -337,10 +338,13 @@ const Calander = () => {
         <div className="flex items-center lg:hidden justify-between my-4 px-5">
           <MoreVert style={{ fontSize: "18px" }} />
           <div className="font-bold text-[10px] gap-1  flex items-center">
-            <p>20 - 26 Nov, 2013</p>
+            <p>{moment(currentDate).format("MMM DD, YYYY")}</p>
             <ExpandMore style={{ fontSize: "16px" }} />
           </div>
-          <div className="w-[15px] h-[15px]">
+          <div
+            className="w-[15px] h-[15px]"
+            onClick={() => setShowFilter(true)}
+          >
             <svg
               fill="#000"
               xmlns="http://www.w3.org/2000/svg"
@@ -425,23 +429,6 @@ const Calander = () => {
                 ),
               }}
             />
-
-            {/* TOOLTIP */}
-            {selectedSlot && (
-              <div
-                className="tooltip"
-                style={{
-                  position: "absolute",
-                  top: tooltipPosition.top,
-                  left: tooltipPosition.left,
-                  zIndex: 1000,
-                }}
-              >
-                {/* Your tooltip content */}
-                {moment(selectedSlot.start).format("LT")} -{" "}
-                {moment(selectedSlot.end).format("LT")}
-              </div>
-            )}
           </div>
         </div>
       </div>
@@ -450,10 +437,10 @@ const Calander = () => {
         showIcons={
           modalView === "client" || modalView === "services" ? false : true
         }
-        title="Request Info"
         show={showDrawer}
         showDrawer={() => {
           setShowDrawer(false);
+          setEvent({ client: {}, service: {} });
           setModalView("appointment");
         }}
       >
@@ -588,17 +575,16 @@ const Calander = () => {
         ) : modalView === "booked" ? (
           <div className=" w-full h-screen relative">
             <div className=" w-full">
-              <div className="flex lg:hidden justify-end  flex-end py-3 w-full">
-                <Close
-                  style={{ fontSize: "25px" }}
-                  onClick={() => {
-                    setShowDrawer(false);
-                    setModalView("appointment");
-                  }}
-                />
-              </div>
-
               <div className="bg-[#3093e8] h-[130px] w-full px-5 py-5">
+                <div className="flex lg:hidden justify-end  flex-end  w-full">
+                  <Close
+                    style={{ fontSize: "25px", color: "#FFFFFF" }}
+                    onClick={() => {
+                      setShowDrawer(false);
+                      setModalView("appointment");
+                    }}
+                  />
+                </div>
                 <h1 className="pb-[28px] font-semibold text-[24px] text-white">
                   Booked
                 </h1>
@@ -887,6 +873,128 @@ const Calander = () => {
           </div>
         )}
       </DrawerComponent>
+
+      <div className="block lg:hidden">
+        <DrawerComponent
+          showIcons={false}
+          show={showFilter}
+          showDrawer={() => {
+            setShowFilter(false);
+            setShowDrawer(false);
+          }}
+        >
+          <div className="  py-[16px]">
+            <div className="flex lg:hidden justify-end px-[16px]  flex-end  w-full">
+              <Close
+                style={{ fontSize: "30px" }}
+                onClick={() => {
+                  setShowFilter(false);
+                }}
+              />
+            </div>
+            <h1 className="px-[28px] mt-[20px] font-semibold text-[23px]">
+              Calander View
+            </h1>
+            <div className="px-[28px] flex items-center gap-8 mt-4 mb-[59px]">
+              {/* DAY */}
+              <div
+                className="flex items-center flex-col gap-2"
+                onClick={() => handleSelectView("day")}
+              >
+                <div
+                  className={`${
+                    view?.key === "day" ? "bg-[#6950f3]" : "bg-[white]"
+                  } h-[44px] w-[44px] rounded-full border-[1px] border-[#d5d7da] flex justify-center items-center`}
+                >
+                  <div className="w-[20px] h-[20px]">
+                    <svg
+                      fill={`${view?.key === "day" ? "#FFFFFF" : "#000"}  `}
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M3 3.75A.75.75 0 0 1 3.75 3h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 3.75Zm0 4.5a1.5 1.5 0 0 1 1.5-1.5h15a1.5 1.5 0 0 1 1.5 1.5v7.5a1.5 1.5 0 0 1-1.5 1.5h-15a1.5 1.5 0 0 1-1.5-1.5v-7.5Zm16.5 0h-15v7.5h15v-7.5ZM3 20.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+
+                <p>Day</p>
+              </div>
+
+              {/* WEEK */}
+              <div
+                className="flex items-center flex-col gap-2"
+                onClick={() => handleSelectView("week")}
+              >
+                <div
+                  className={`${
+                    view?.key === "week" ? "bg-[#6950f3]" : "bg-[white]"
+                  } h-[44px] w-[44px] rounded-full border-[1px] border-[#d5d7da] flex justify-center items-center`}
+                >
+                  <div className="w-[20px] h-[20px]">
+                    <svg
+                      fill={`${view?.key === "week" ? "#FFFFFF" : "#000"}  `}
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M2.25 5.25a1.5 1.5 0 0 1 1.5-1.5h16.5a1.5 1.5 0 0 1 1.5 1.5v13.5a1.5 1.5 0 0 1-1.5 1.5H3.75a1.5 1.5 0 0 1-1.5-1.5V5.25Zm6 0h-4.5v13.5h4.5V5.25Zm1.5 0v13.5h4.5V5.25h-4.5Zm6 0v13.5h4.5V5.25h-4.5Z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+
+                <p>Week</p>
+              </div>
+
+              {/* Month */}
+              <div
+                className="flex items-center flex-col gap-2"
+                onClick={() => handleSelectView("month")}
+              >
+                <div
+                  className={`${
+                    view?.key === "month" ? "bg-[#6950f3]" : "bg-[white]"
+                  } h-[44px] w-[44px] rounded-full border-[1px] border-[#d5d7da] flex justify-center items-center`}
+                >
+                  <div className="w-[20px] h-[20px]">
+                    <svg
+                      fill={`${view?.key === "month" ? "#FFFFFF" : "#000"}  `}
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M2.25 5.25a1.5 1.5 0 0 1 1.5-1.5h16.5a1.5 1.5 0 0 1 1.5 1.5v13.5a1.5 1.5 0 0 1-1.5 1.5H3.75a1.5 1.5 0 0 1-1.5-1.5V5.25Zm4.5 0h-3v13.5h3V5.25Zm1.5 0v13.5h3V5.25h-3Zm4.5 0v13.5h3V5.25h-3Zm4.5 0v13.5h3V5.25h-3Z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+
+                <p>Month</p>
+              </div>
+            </div>
+
+            <h1 className="px-[28px] mb-6 mt-[20px] font-semibold text-[23px]">
+              Team Members
+            </h1>
+
+            <div className="bg-[#e7e8ff] p-4 flex items-center gap-3">
+              <div className="bg-[#e7e8ff] border-[3px] border-[#FFF] h-[44px] w-[44px] font-semibold flex justify-center items-center text-[#6950f3] rounded-full">
+                <p className="text-sm">TO</p>
+              </div>
+
+              <p className="text-base font-semibold">Tfaweya Omotade</p>
+            </div>
+          </div>
+        </DrawerComponent>
+      </div>
     </>
   );
 };

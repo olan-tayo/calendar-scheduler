@@ -8,9 +8,9 @@ const BottomTab = () => {
     <div className="w-full block lg:hidden">
       <div
         style={{
-          boxShadow: " 0 20px 80px 0 #0d161905, 0 20px 90px 0 #0d161929",
+          boxShadow: "0 20px 80px 0 #0d161905, 0 20px 90px 0 #0d161929",
         }}
-        className="absolute z-30 bottom-0 bg-white h-[58px] w-full flex items-center justify-between px-6 "
+        className="absolute z-[0] bottom-0 bg-white h-[58px] w-full flex items-center justify-between px-6 "
       >
         <div className="">
           {" "}
