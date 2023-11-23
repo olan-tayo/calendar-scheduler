@@ -42,7 +42,8 @@ const Calander = () => {
       servicesOffered: [
         {
           service: "Leg and calming sounds",
-          time: "1hr",
+          time: "1",
+          time_type: "hr",
           amount: "100000",
         },
       ],
@@ -52,12 +53,14 @@ const Calander = () => {
       servicesOffered: [
         {
           service: "Hair cut",
-          time: "30mins",
+          time: "30",
+          time_type: "mins",
           amount: "5000",
         },
         {
           service: "Plaiting",
-          time: "5hrs",
+          time: "5",
+          time_type: "hr",
           amount: "20000",
         },
       ],
@@ -75,6 +78,23 @@ const Calander = () => {
   const [modalView, setModalView] = useState("appointment");
   const [event, setEvent] = useState({ client: {}, service: {} });
   const [selectedEvent, setSelectedEvent] = useState();
+  const [currentDate, setCurrentDate] = useState(moment());
+
+  const handleNavigate = (date, view) => {
+    setCurrentDate(date);
+  };
+
+  const handleToday = () => {
+    setCurrentDate(moment());
+  };
+
+  const handleNext = (view) => {
+    setCurrentDate(currentDate.clone().add(1, view?.key));
+  };
+
+  const handleBack = (view) => {
+    setCurrentDate(currentDate.clone().subtract(1, view?.key));
+  };
 
   const handleSelectView = (selectedView) => {
     localStorage.setItem(
@@ -152,12 +172,13 @@ const Calander = () => {
     setModalView("appointment");
   };
 
-  const handleAddService = (service, time, amount) => {
+  const handleAddService = (service, time, time_type, amount) => {
     setEvent((prev) => ({
       ...prev,
       service: {
         service,
         time,
+        time_type,
         amount,
       },
     }));
@@ -167,7 +188,12 @@ const Calander = () => {
   const handleSaveEvent = () => {
     const value = {
       start: selectedSlot?.start,
-      end: selectedSlot?.end,
+      end: moment(selectedSlot?.start)
+        .clone()
+        ?.add(
+          event?.service?.time,
+          `${event?.service?.time_type === "hr" ? "hour" : "minutes"}`
+        ),
       service: event?.service,
       client: event?.client,
     };
@@ -210,6 +236,7 @@ const Calander = () => {
               <div className="h-[40px] w-full px-2 flex  border-[1px] bg-white border-[#bfbfbf] text-sm rounded-[24px] ">
                 <div className="px-2 border-r-[1px] border-r-[#bfbfbf] flex items-center">
                   <KeyboardArrowLeft
+                    onClick={() => handleBack(view)}
                     style={{
                       color: "101928",
                       fontSize: "20px",
@@ -220,11 +247,15 @@ const Calander = () => {
                 <div className="px-5 border-r-[1px] font-medium tetx-[15px] border-r-[#bfbfbf] flex items-center">
                   <p>Today</p>
                 </div>
-                <div className="px-5 border-r-[1px] font-medium tetx-[15px] border-r-[#bfbfbf] flex items-center">
-                  <p>20 - 26 Nov, 2013</p>
+                <div
+                  className="px-5 border-r-[1px] font-medium tetx-[15px] border-r-[#bfbfbf] flex items-center"
+                  onClick={handleToday}
+                >
+                  <p>{moment(currentDate).format("MMM DD, YYYY")}</p>
                 </div>
                 <div className="px-2  flex items-center">
                   <KeyboardArrowRight
+                    onClick={() => handleNext(view)}
                     style={{
                       color: "101928",
                       fontSize: "20px",
@@ -333,6 +364,8 @@ const Calander = () => {
               onSelectEvent={handleSelectEvent}
               startAccessor="start"
               endAccessor="end"
+              date={currentDate.toDate()}
+              onNavigate={handleNavigate}
               selectable
               defaultView={view?.key || "week"}
               toolbar={null}
@@ -523,6 +556,7 @@ const Calander = () => {
                             handleAddService(
                               data?.service,
                               data?.time,
+                              data?.time_type,
                               data?.amount
                             )
                           }
@@ -534,6 +568,7 @@ const Calander = () => {
                               </p>
                               <p className="text-[#757676] text-sm font-normal">
                                 {data?.time}
+                                {data?.time_type}
                               </p>
                             </div>
                             <div>
@@ -666,7 +701,8 @@ const Calander = () => {
                         {selectedEvent?.service?.service}
                       </p>
                       <p className="text-[#757676] text-sm font-normal">
-                        {selectedEvent?.service?.time}
+                        {selectedEvent?.service?.time +
+                          selectedEvent?.service?.time_type}
                       </p>
                     </div>
                     <div>
@@ -794,6 +830,7 @@ const Calander = () => {
                     </p>
                     <p className="text-[#757676] text-sm font-normal">
                       {event?.service?.time}
+                      {event?.service?.time_type}
                     </p>
                   </div>
                   <div>
@@ -823,6 +860,7 @@ const Calander = () => {
                       Number(event?.service?.amount)?.toLocaleString() +
                       "(" +
                       event?.service?.time +
+                      event?.service?.time_type +
                       ")"
                     : " Free min(0)"}
                 </p>
