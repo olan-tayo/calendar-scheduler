@@ -836,7 +836,7 @@ const Calander = () => {
               )}
             </div>
 
-            <div className="absolute z-70 bottom-0 border-t-[1px] p-6 border-t-[#e7e8e9] w-full">
+            <div className="relative mt-[50%] lg:absolute z-70 bottom-0 border-t-[1px] p-6 border-t-[#e7e8e9] w-full">
               <div className="flex items-center justify-between">
                 <p className="text-[#0d1619] font-semibold tetx-sm">Total</p>
                 <p className="text-[#0d1619] font-semibold tetx-sm">

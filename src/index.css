@@ -42,6 +42,10 @@ code {
   cursor: pointer !important;
 }
 
+.rbc-day-slot .rbc-events-container {
+  margin-right: 0 !important;
+}
+
 .rbc-header + .rbc-header {
   border: none !important;
 }
