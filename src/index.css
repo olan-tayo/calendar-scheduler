@@ -38,6 +38,10 @@ code {
   align-items: center !important;
 }
 
+.rbc-time-content {
+  cursor: pointer !important;
+}
+
 .rbc-header + .rbc-header {
   border: none !important;
 }
