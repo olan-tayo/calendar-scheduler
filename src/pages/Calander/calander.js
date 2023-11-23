@@ -66,7 +66,7 @@ const Calander = () => {
 
   const view = JSON.parse(localStorage.getItem("myView"));
   // let allEvents = [JSON.parse(localStorage.getItem("myevents"))];
-  const [setHoveredSlot] = useState(null);
+  const [hoveredSlot, setHoveredSlot] = useState(null);
   const [events, setEvents] = useState([]);
   const [toggleView, setToggleView] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
@@ -259,7 +259,7 @@ const Calander = () => {
                   onClick={() => setToggleView(!toggleView)}
                   className="cursor-pointer bg-white text-sm text-black h-[34px] rounded-[40px] border-[#bfbfbf] border-[1px] w-[100px] px-[9px] flex justify-center gap-[15px] items-center"
                 >
-                  <p className="capitalize">{view?.value}</p>
+                  <p className="capitalize">{view?.value || "Week"}</p>
                   {toggleView ? (
                     <ExpandLess style={{ fontSize: "20px", fontWeight: 400 }} />
                   ) : (
@@ -333,7 +333,7 @@ const Calander = () => {
               startAccessor="start"
               endAccessor="end"
               selectable
-              defaultView={view?.key}
+              defaultView={view?.key || "week"}
               toolbar={null}
               timeslots={4}
               step={15}
@@ -418,7 +418,10 @@ const Calander = () => {
         }
         title="Request Info"
         show={showDrawer}
-        showDrawer={() => setShowDrawer(false)}
+        showDrawer={() => {
+          setShowDrawer(false);
+          setModalView("appointment");
+        }}
       >
         {modalView === "client" ? (
           <div className=" py-[16px]">
@@ -548,127 +551,137 @@ const Calander = () => {
           </div>
         ) : modalView === "booked" ? (
           <div className=" w-full h-screen relative">
-            <div className="px-[32px] py-4 w-full">
+            <div className=" w-full">
               <div className="flex lg:hidden justify-end  flex-end py-3 w-full">
                 <Close
                   style={{ fontSize: "25px" }}
-                  onClick={() => setShowDrawer(false)}
+                  onClick={() => {
+                    setShowDrawer(false);
+                    setModalView("appointment");
+                  }}
                 />
               </div>
-              <h1 className="pb-[24px] font-semibold text-[24px]">
-                New appointment
-              </h1>
 
-              {/* SELECT A CLIENT */}
-              <div
-                className="border-[1px] cursor-pointer border-[#bfbfbf] rounded-[8px] p-[16px] w-full flex items-center justify-between"
-                onClick={
-                  selectedEvent?.client?.name
-                    ? null
-                    : () => setModalView("client")
-                }
-              >
-                {selectedEvent?.client?.name ? (
-                  <div className="flex gap-3  items-center">
-                    <div className="bg-[#e7e8ff] h-[58px] w-[58px] font-medium flex justify-center items-center text-[#6950f3] text-2xl leading-[32px] rounded-full">
-                      <p className="">
-                        {selectedEvent?.client?.name?.charAt(0)}
-                      </p>
+              <div className="bg-[#3093e8] h-[130px] w-full px-5 py-5">
+                <h1 className="pb-[28px] font-semibold text-[24px] text-white">
+                  Booked
+                </h1>
+              </div>
+
+              <div className="px-[32px] py-4">
+                {/* SELECT A CLIENT */}
+                <div
+                  className="mt-[-15%] bg-white  cursor-pointer border-[1px] rounded-[8px] p-[16px] w-full flex items-center justify-between border-[#bfbfbf]"
+                  onClick={
+                    selectedEvent?.client?.name
+                      ? null
+                      : () => setModalView("client")
+                  }
+                >
+                  {selectedEvent?.client?.name ? (
+                    <div className="flex gap-3  items-center">
+                      <div className="bg-[#e7e8ff] h-[58px] w-[58px] font-medium flex justify-center items-center text-[#6950f3] text-2xl leading-[32px] rounded-full">
+                        <p className="">
+                          {selectedEvent?.client?.name?.charAt(0)}
+                        </p>
+                      </div>
+                      <div className="">
+                        <p className="font-semibold text-sm">
+                          {selectedEvent?.client?.name}
+                        </p>
+                        <p className="text-sm">{selectedEvent?.client?.name}</p>
+                      </div>
                     </div>
-                    <div className="">
-                      <p className="font-semibold text-sm">
-                        {selectedEvent?.client?.name}
-                      </p>
-                      <p className="text-sm">{selectedEvent?.client?.name}</p>
+                  ) : (
+                    <div className="flex gap-3  items-center">
+                      <div className="text-[#6950f3] flex justify-center items-center bg-[#e7e8ff] w-[64px] h-[64px] rounded-full">
+                        <div className="w-[30px] h-[30px]">
+                          <svg
+                            fill="#6950f3"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              d="M12 3.75a5.25 5.25 0 0 0-.078 10.5h.156A5.25 5.25 0 0 0 12 3.75Zm3.463 11.045a6.75 6.75 0 1 0-6.925 0 11.25 11.25 0 0 0-6.281 5.08.75.75 0 1 0 1.299.75 9.75 9.75 0 0 1 16.888 0 .75.75 0 1 0 1.3-.75 11.25 11.25 0 0 0-6.281-5.08Z"
+                              clip-rule="evenodd"
+                            ></path>
+                          </svg>
+                        </div>
+                      </div>
+                      <div className="">
+                        <p className="font-semibold text-sm">Select a client</p>
+                        <p className="text-sm">Leave empty for walk in</p>
+                      </div>
                     </div>
-                  </div>
-                ) : (
-                  <div className="flex gap-3  items-center">
-                    <div className="text-[#6950f3] flex justify-center items-center bg-[#e7e8ff] w-[64px] h-[64px] rounded-full">
-                      <div className="w-[30px] h-[30px]">
+                  )}
+
+                  <div>
+                    {!selectedEvent?.client?.name && (
+                      <div className="w-[24px] h-[24px]">
                         <svg
-                          fill="#6950f3"
+                          fill="#000"
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 24 24"
                         >
                           <path
                             fill-rule="evenodd"
-                            d="M12 3.75a5.25 5.25 0 0 0-.078 10.5h.156A5.25 5.25 0 0 0 12 3.75Zm3.463 11.045a6.75 6.75 0 1 0-6.925 0 11.25 11.25 0 0 0-6.281 5.08.75.75 0 1 0 1.299.75 9.75 9.75 0 0 1 16.888 0 .75.75 0 1 0 1.3-.75 11.25 11.25 0 0 0-6.281-5.08Z"
+                            d="M12 4a.75.75 0 0 1 .75.75v6.5h6.5a.75.75 0 0 1 0 1.5h-6.5v6.5a.75.75 0 0 1-1.5 0v-6.5h-6.5a.75.75 0 0 1 0-1.5h6.5v-6.5A.75.75 0 0 1 12 4Z"
                             clip-rule="evenodd"
                           ></path>
                         </svg>
                       </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex justify-between items-center mt-6">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <p className="font-semibold text-sm ">
+                        Wednesday, 22 Nov 2023
+                      </p>
+                      <ExpandMore style={{ fontSize: "24px" }} />
                     </div>
-                    <div className="">
-                      <p className="font-semibold text-sm">Select a client</p>
-                      <p className="text-sm">Leave empty for walk in</p>
+                    <p className="text-sm text-[#757676]">Doesn't repeat</p>
+                  </div>
+                  <div>
+                    <button className="text-[101928] rounded-[24px] border-[#d5d7da] outline-none text-sm border-[1px] px-[12px] py-[6px]">
+                      Edit{" "}
+                    </button>
+                  </div>
+                </div>
+
+                {/*  SELECT A SERVICE */}
+                {selectedEvent?.service?.service ? (
+                  <div className="border-[1px] px-[15px] mt-6  border-[#bfbfbf] rounded-[8px] py-[20px] border-l-[#6950f3] flex justify-between  border-l-[5px]">
+                    <div>
+                      <p className="text-[#0d1619] text-sm font-semibold">
+                        {selectedEvent?.service?.service}
+                      </p>
+                      <p className="text-[#757676] text-sm font-normal">
+                        {selectedEvent?.service?.time}
+                      </p>
                     </div>
+                    <div>
+                      <p className="text-[#0d1619] text-sm font-semibold">
+                        NGN{" "}
+                        {Number(
+                          selectedEvent?.service?.amount
+                        )?.toLocaleString()}
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div
+                    onClick={() => setModalView("services")}
+                    className="flex justify-between items-center mt-6 border-[1px]  text-sm font-medium rounded-[4px] border-[#bfbfbf] px-[16px] py-[12px] text-[#757676]"
+                  >
+                    <p>Add a service</p>
+                    <ArrowForwardIos style={{ fontSize: "12px" }} />
                   </div>
                 )}
-
-                <div>
-                  {!selectedEvent?.client?.name && (
-                    <div className="w-[24px] h-[24px]">
-                      <svg
-                        fill="#000"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M12 4a.75.75 0 0 1 .75.75v6.5h6.5a.75.75 0 0 1 0 1.5h-6.5v6.5a.75.75 0 0 1-1.5 0v-6.5h-6.5a.75.75 0 0 1 0-1.5h6.5v-6.5A.75.75 0 0 1 12 4Z"
-                          clip-rule="evenodd"
-                        ></path>
-                      </svg>
-                    </div>
-                  )}
-                </div>
               </div>
-
-              <div className="flex justify-between items-center mt-6">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <p className="font-semibold text-sm ">
-                      Wednesday, 22 Nov 2023
-                    </p>
-                    <ExpandMore style={{ fontSize: "24px" }} />
-                  </div>
-                  <p className="text-sm text-[#757676]">Doesn't repeat</p>
-                </div>
-                <div>
-                  <button className="text-[101928] rounded-[24px] border-[#d5d7da] outline-none text-sm border-[1px] px-[12px] py-[6px]">
-                    Edit{" "}
-                  </button>
-                </div>
-              </div>
-
-              {/*  SELECT A SERVICE */}
-              {selectedEvent?.service?.service ? (
-                <div className="border-[1px] px-[15px] mt-6  border-[#bfbfbf] rounded-[8px] py-[20px] border-l-[#6950f3] flex justify-between  border-l-[5px]">
-                  <div>
-                    <p className="text-[#0d1619] text-sm font-semibold">
-                      {selectedEvent?.service?.service}
-                    </p>
-                    <p className="text-[#757676] text-sm font-normal">
-                      {selectedEvent?.service?.time}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-[#0d1619] text-sm font-semibold">
-                      NGN{" "}
-                      {Number(selectedEvent?.service?.amount)?.toLocaleString()}
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <div
-                  onClick={() => setModalView("services")}
-                  className="flex justify-between items-center mt-6 border-[1px]  text-sm font-medium rounded-[4px] border-[#bfbfbf] px-[16px] py-[12px] text-[#757676]"
-                >
-                  <p>Add a service</p>
-                  <ArrowForwardIos style={{ fontSize: "12px" }} />
-                </div>
-              )}
             </div>
           </div>
         ) : (
