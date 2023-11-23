@@ -129,17 +129,17 @@ const Calander = () => {
   // };
 
   const Event = ({ event }) => (
-    <div
-      className="myEvent"
-      onClick={() => {
-        setModalView("booked");
-        setSelectedEvent(event);
-      }}
-    >
+    <div className="myEvent" onClick={() => handleSelectEvent(event)}>
       <strong>{` ${event?.client?.name}`}</strong>
       <p>{event?.service?.service}</p>
     </div>
   );
+
+  const handleSelectEvent = (event) => {
+    setShowDrawer(true);
+    setModalView("booked");
+    setSelectedEvent(event);
+  };
 
   const handleAddClient = (name, email) => {
     setEvent((prev) => ({
@@ -330,6 +330,7 @@ const Calander = () => {
             <Calendar
               localizer={localizer}
               events={events}
+              onSelectEvent={handleSelectEvent}
               startAccessor="start"
               endAccessor="end"
               selectable
@@ -338,7 +339,7 @@ const Calander = () => {
               timeslots={4}
               step={15}
               onSelectSlot={(slotInfo) => handleSelect(slotInfo)}
-              onSelectEvent={() => handleTooltipClose()}
+              // onSelectEvent={() => handleTooltipClose()}
               onView={() => handleTooltipClose()}
               components={{
                 event: Event,
@@ -589,7 +590,9 @@ const Calander = () => {
                         <p className="font-semibold text-sm">
                           {selectedEvent?.client?.name}
                         </p>
-                        <p className="text-sm">{selectedEvent?.client?.name}</p>
+                        <p className="text-sm">
+                          {selectedEvent?.client?.email}
+                        </p>
                       </div>
                     </div>
                   ) : (
@@ -639,7 +642,10 @@ const Calander = () => {
                   <div>
                     <div className="flex items-center gap-2">
                       <p className="font-semibold text-sm ">
-                        Wednesday, 22 Nov 2023
+                        {moment(selectedEvent?.start)?.format("dddd") +
+                          "," +
+                          " " +
+                          moment(selectedEvent?.start)?.format("ll")}
                       </p>
                       <ExpandMore style={{ fontSize: "24px" }} />
                     </div>
@@ -763,7 +769,10 @@ const Calander = () => {
                 <div>
                   <div className="flex items-center gap-2">
                     <p className="font-semibold text-sm ">
-                      Wednesday, 22 Nov 2023
+                      {moment(selectedSlot?.start)?.format("dddd") +
+                        "," +
+                        " " +
+                        moment(selectedSlot?.start)?.format("ll")}
                     </p>
                     <ExpandMore style={{ fontSize: "24px" }} />
                   </div>

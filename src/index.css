@@ -23,6 +23,11 @@ code {
   height: 0px !important;
 }
 
+.rbc-day-slot .rbc-event,
+.rbc-day-slot .rbc-background-event {
+  z-index: 0 !important;
+}
+
 .rbc-time-view .rbc-allday-cell {
   height: 0px !important;
 }
