@@ -703,7 +703,7 @@ const Calander = () => {
                 ) : (
                   <div
                     onClick={() => setModalView("services")}
-                    className="flex justify-between items-center mt-6 border-[1px]  text-sm font-medium rounded-[4px] border-[#bfbfbf] px-[16px] py-[12px] text-[#757676]"
+                    className="flex justify-between cursor-pointer items-center mt-6 border-[1px]  text-sm font-medium rounded-[4px] border-[#bfbfbf] px-[16px] py-[12px] text-[#757676]"
                   >
                     <p>Add a service</p>
                     <ArrowForwardIos style={{ fontSize: "12px" }} />
@@ -828,7 +828,7 @@ const Calander = () => {
               ) : (
                 <div
                   onClick={() => setModalView("services")}
-                  className="flex justify-between items-center mt-6 border-[1px]  text-sm font-medium rounded-[4px] border-[#bfbfbf] px-[16px] py-[12px] text-[#757676]"
+                  className="flex justify-between items-center mt-6 border-[1px] cursor-pointer  text-sm font-medium rounded-[4px] border-[#bfbfbf] px-[16px] py-[12px] text-[#757676]"
                 >
                   <p>Add a service</p>
                   <ArrowForwardIos style={{ fontSize: "12px" }} />
