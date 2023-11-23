@@ -1,0 +1,22 @@
+
+.drawer.enter-done{
+    opacity: 1;
+    pointer-events: visible;
+    overflow-x: hidden;
+    overflow-y: auto;
+    transition: all 0.3s ease-in-out;
+}
+
+.drawer.exit{
+    opacity: 0;
+}
+
+
+.drawer.enter-done .drawer-content{
+    right: 0px;
+}
+
+
+.drawer.exit .drawer-content{
+    right: -20rem;
+}
