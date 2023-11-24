@@ -366,7 +366,7 @@ const Calander = () => {
               onSelectEvent={handleSelectEvent}
               startAccessor="start"
               endAccessor="end"
-              date={currentDate.toDate()}
+              date={moment(currentDate).toDate()}
               onNavigate={handleNavigate}
               selectable
               defaultView={view?.key || "week"}
