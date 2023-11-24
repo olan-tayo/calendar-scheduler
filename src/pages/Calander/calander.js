@@ -70,11 +70,10 @@ const Calander = () => {
 
   const view = JSON.parse(localStorage.getItem("myView"));
 
-  // const [hoveredSlot, setHoveredSlot] = useState(null);
   const [events, setEvents] = useState([]);
   const [toggleView, setToggleView] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
-  // const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
+
   const [showDrawer, setShowDrawer] = useState(false);
   const [modalView, setModalView] = useState("appointment");
   const [event, setEvent] = useState({ client: {}, service: {} });
@@ -83,7 +82,7 @@ const Calander = () => {
   const [showFilter, setShowFilter] = useState(false);
   const [moreVert, setMoreVert] = useState(false);
 
-  const handleNavigate = (date, view) => {
+  const handleNavigate = (date) => {
     setCurrentDate(date);
   };
 
@@ -125,12 +124,6 @@ const Calander = () => {
   const handleSelect = (slotInfo) => {
     setSelectedSlot(slotInfo);
     setShowDrawer(true);
-    // setTooltipPosition({ top: slotInfo.y, left: slotInfo.x });
-    // setHoveredSlot(slotInfo);
-  };
-
-  const handleTooltipClose = () => {
-    setSelectedSlot(null);
   };
 
   const Event = ({ event }) => (
@@ -208,20 +201,7 @@ const Calander = () => {
     setMoreVert(false);
   };
 
-  // let allEvents = JSON.parse(localStorage.getItem("myevents"));
-
   useEffect(() => {
-    // if (allEvents) {
-    //   const persistedEvent = allEvents.map((event) => ({
-    //     ...event,
-    //     start: new Date(event.start),
-    //     end: new Date(event.end),
-    //   }));
-    //   setEvents(persistedEvent);
-    //   console.log(Array.isArray(persistedEvent), persistedEvent, events);
-    // }
-
-    // setEvents(persistedEvent);
     if (!view) {
       localStorage.setItem(
         "myView",
@@ -389,8 +369,6 @@ const Calander = () => {
               timeslots={4}
               step={15}
               onSelectSlot={(slotInfo) => handleSelect(slotInfo)}
-              // onSelectEvent={() => handleTooltipClose()}
-              onView={() => handleTooltipClose()}
               components={{
                 event: Event,
                 week: {
