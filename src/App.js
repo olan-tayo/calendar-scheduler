@@ -3,6 +3,7 @@ import AppRouter from "./Router/AppRouter";
 import BottomTab from "./components/BottomTab/BottomTab";
 import Navbar from "./components/Navbar/Navbar";
 import Sidebar from "./components/Sidebar/Sidebar";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
       <div>
         <BottomTab />
       </div>
+      <Toaster />
     </div>
   );
 }

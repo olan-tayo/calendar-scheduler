@@ -1,6 +1,5 @@
 import React from "react";
 import "./drawer.css";
-// import close_icon from '../../assets/icons/close.svg'
 import { CSSTransition } from "react-transition-group";
 
 const DrawerComponent = ({ show, showDrawer, showIcons, children }) => {

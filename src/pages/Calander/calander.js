@@ -15,7 +15,7 @@ import {
 } from "@mui/icons-material";
 import DrawerComponent from "../../components/Drawers/drawers";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import cogoToast from "cogo-toast";
+import toast from "react-hot-toast";
 
 const localizer = momentLocalizer(moment);
 
@@ -69,12 +69,12 @@ const Calander = () => {
   ];
 
   const view = JSON.parse(localStorage.getItem("myView"));
-  // let allEvents = [JSON.parse(localStorage.getItem("myevents"))];
-  const [hoveredSlot, setHoveredSlot] = useState(null);
+
+  // const [hoveredSlot, setHoveredSlot] = useState(null);
   const [events, setEvents] = useState([]);
   const [toggleView, setToggleView] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
-  const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
+  // const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
   const [showDrawer, setShowDrawer] = useState(false);
   const [modalView, setModalView] = useState("appointment");
   const [event, setEvent] = useState({ client: {}, service: {} });
@@ -125,8 +125,8 @@ const Calander = () => {
   const handleSelect = (slotInfo) => {
     setSelectedSlot(slotInfo);
     setShowDrawer(true);
-    setTooltipPosition({ top: slotInfo.y, left: slotInfo.x });
-    setHoveredSlot(slotInfo);
+    // setTooltipPosition({ top: slotInfo.y, left: slotInfo.x });
+    // setHoveredSlot(slotInfo);
   };
 
   const handleTooltipClose = () => {
@@ -172,13 +172,15 @@ const Calander = () => {
 
   const handleSaveEvent = () => {
     const value = {
-      start: selectedSlot?.start,
-      end: moment(selectedSlot?.start)
-        .clone()
-        ?.add(
-          event?.service?.time,
-          `${event?.service?.time_type === "hr" ? "hour" : "minutes"}`
-        ),
+      start: new Date(selectedSlot?.start),
+      end: new Date(
+        moment(selectedSlot?.start)
+          .clone()
+          ?.add(
+            event?.service?.time,
+            `${event?.service?.time_type === "hr" ? "hour" : "minutes"}`
+          )
+      ),
       service: event?.service,
       client: {
         name: event?.client?.name || "Walk In",
@@ -200,13 +202,26 @@ const Calander = () => {
       (allEvents) => allEvents?.start !== event?.start
     );
     setEvents(filteredEvent);
-    cogoToast.success("Event deleted successfully");
+    toast.success("Event deleted successfully");
     setModalView("appointment");
     setShowDrawer(false);
     setMoreVert(false);
   };
 
+  // let allEvents = JSON.parse(localStorage.getItem("myevents"));
+
   useEffect(() => {
+    // if (allEvents) {
+    //   const persistedEvent = allEvents.map((event) => ({
+    //     ...event,
+    //     start: new Date(event.start),
+    //     end: new Date(event.end),
+    //   }));
+    //   setEvents(persistedEvent);
+    //   console.log(Array.isArray(persistedEvent), persistedEvent, events);
+    // }
+
+    // setEvents(persistedEvent);
     if (!view) {
       localStorage.setItem(
         "myView",

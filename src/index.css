@@ -226,7 +226,7 @@ code {
 .rbc-day-slot .rbc-background-event {
   background: #a5dff8;
   border-color: #a5dff8;
-  height: 80px !important;
+  height: 100px !important;
   color: #101928;
   z-index: 40 !important;
   font-size: 12px;
