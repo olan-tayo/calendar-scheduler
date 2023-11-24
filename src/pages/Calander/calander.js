@@ -131,24 +131,6 @@ const Calander = () => {
     setSelectedSlot(null);
   };
 
-  // const slotPropGetter = (date, resourceId, resourceIndex) => {
-  //   if (hoveredSlot && resourceId === 0) {
-  //     // Assuming resourceId 0 represents the main resource
-  //     const start = moment(hoveredSlot.start).startOf("hour");
-  //     const end = moment(hoveredSlot.end).endOf("hour");
-
-  //     if (moment(date).isBetween(start, end, null, "[]")) {
-  //       return {
-  //         style: {
-  //           backgroundColor: "rgba(0, 123, 255, 0.5)", // Set your preferred background color
-  //           color: "white", // Set the text color
-  //         },
-  //       };
-  //     }
-  //   }
-  //   return {};
-  // };
-
   const Event = ({ event }) => (
     <div className="myEvent" onClick={() => handleSelectEvent(event)}>
       <strong>{` ${event?.client?.name}`}</strong>
@@ -196,7 +178,10 @@ const Calander = () => {
           `${event?.service?.time_type === "hr" ? "hour" : "minutes"}`
         ),
       service: event?.service,
-      client: event?.client,
+      client: {
+        name: event?.client?.name || "Walk In",
+        email: event?.client?.email || "",
+      },
     };
 
     setEvents((prev) => {
@@ -207,6 +192,8 @@ const Calander = () => {
     setEvent({ client: {}, service: {} });
     setShowDrawer(false);
   };
+
+  console.log(event?.service);
 
   useEffect(() => {
     if (!view) {
@@ -520,9 +507,9 @@ const Calander = () => {
               </div>
             </div>
 
-            <div className="border-[0.5px] mt-4" />
+            <div className="hidden lg:block border-[0.5px] mt-4" />
 
-            <div className="cursor-pointer">
+            <div className="cursor-pointer pt-5 lg:mt-0">
               {services?.map((service, index) => {
                 return (
                   <div key={index}>
@@ -787,7 +774,7 @@ const Calander = () => {
                 </div>
               </div>
 
-              <div className="flex justify-between items-center mt-6">
+              <div className="flex justify-between items-center mt-14 lg:mt-6">
                 <div>
                   <div className="flex items-center gap-2">
                     <p className="font-semibold text-sm ">
@@ -836,10 +823,10 @@ const Calander = () => {
               )}
             </div>
 
-            <div className="relative mt-[50%] lg:absolute z-70 bottom-0 border-t-[1px] p-6 border-t-[#e7e8e9] w-full">
+            <div className="relative mt-6 lg:absolute z-70 bottom-0 border-t-[0px] lg:border-t-[1px] p-6 border-t-[#e7e8e9] w-full">
               <div className="flex items-center justify-between">
-                <p className="text-[#0d1619] font-semibold tetx-sm">Total</p>
-                <p className="text-[#0d1619] font-semibold tetx-sm">
+                <p className="text-[#0d1619] font-semibold text-sm">Total</p>
+                <p className="text-[#0d1619] font-semibold text-sm pr-[20px] lg:pr-0">
                   {event?.service?.amount
                     ? "NGN" +
                       " " +
@@ -860,8 +847,16 @@ const Calander = () => {
                 </div>
                 <div className="w-1/2">
                   <button
-                    className="outline-none bg-[#0d1619] text-[#fff] w-full rounded-[8px] h-[48px] font-semibold text-sm border-[1px] border-[#bfbfbf]"
-                    onClick={handleSaveEvent}
+                    className={`${
+                      Object.keys(event?.service)?.length !== 0
+                        ? "bg-[#0d1619] text-[#fff] border-[#bfbfbf] "
+                        : "bg-[#f2f2f2] text-[#acacac] border-[] cursor-not-allowed"
+                    } outline-none   w-full rounded-[8px] h-[48px] font-semibold text-sm border-[1px] `}
+                    onClick={
+                      Object.keys(event?.service)?.length !== 0
+                        ? handleSaveEvent
+                        : null
+                    }
                   >
                     {" "}
                     Save

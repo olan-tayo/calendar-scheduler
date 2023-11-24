@@ -12,7 +12,7 @@ const DrawerComponent = ({ show, showDrawer, showIcons, children }) => {
           inset-0 bg-opacity-50 z-70 opacity-0
            overflow-y-auto h-full w-full transition-all duration-[0.3s]"
         >
-          <div className="flex gap-6 transition-all h-screen w-full md:w-[810px] duration-[0.3s] z-[10000] fixed top-0 right-0 lg:-right-60">
+          <div className="flex gap-6 transition-all h-screen w-full lg:w-[810px] duration-[0.3s] z-[10000] fixed top-0 right-0 lg:-right-60">
             <div className="hidden lg:block mt-4">
               <div className="icon-bg" onClick={showDrawer}>
                 <div className="w-[25px] h-[25px]">
