@@ -91,11 +91,11 @@ const Calander = () => {
   };
 
   const handleNext = (view) => {
-    setCurrentDate(currentDate.clone().add(1, view?.key));
+    setCurrentDate(moment(currentDate).clone().add(1, view?.key));
   };
 
   const handleBack = (view) => {
-    setCurrentDate(currentDate.clone().subtract(1, view?.key));
+    setCurrentDate(moment(currentDate).clone().subtract(1, view?.key));
   };
 
   const handleSelectView = (selectedView) => {
