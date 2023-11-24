@@ -15,6 +15,7 @@ import {
 } from "@mui/icons-material";
 import DrawerComponent from "../../components/Drawers/drawers";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import cogoToast from "cogo-toast";
 
 const localizer = momentLocalizer(moment);
 
@@ -80,6 +81,7 @@ const Calander = () => {
   const [selectedEvent, setSelectedEvent] = useState();
   const [currentDate, setCurrentDate] = useState(moment());
   const [showFilter, setShowFilter] = useState(false);
+  const [moreVert, setMoreVert] = useState(false);
 
   const handleNavigate = (date, view) => {
     setCurrentDate(date);
@@ -193,7 +195,16 @@ const Calander = () => {
     setShowDrawer(false);
   };
 
-  console.log(event?.service);
+  const handleDelete = (event) => {
+    let filteredEvent = events?.filter(
+      (allEvents) => allEvents?.start !== event?.start
+    );
+    setEvents(filteredEvent);
+    cogoToast.success("Event deleted successfully");
+    setModalView("appointment");
+    setShowDrawer(false);
+    setMoreVert(false);
+  };
 
   useEffect(() => {
     if (!view) {
@@ -572,9 +583,26 @@ const Calander = () => {
                     }}
                   />
                 </div>
-                <h1 className="pb-[28px] font-semibold text-[24px] text-white">
-                  Booked
-                </h1>
+                <div className="relative ">
+                  <div
+                    className="flex items-center justify-between pb-[28px] cursor-pointer "
+                    onClick={() => setMoreVert(!moreVert)}
+                  >
+                    <h1 className="font-semibold text-[24px] text-white">
+                      Booked
+                    </h1>
+                    <MoreVert style={{ color: "white" }} />
+                  </div>
+
+                  {moreVert && (
+                    <div
+                      onClick={() => handleDelete(selectedEvent)}
+                      className="absolute cursor-pointer right-0 mt-[-8%]  bg-white text-black flex justify-center items-center w-[150px] py-4 rounded-[8px]"
+                    >
+                      <p>Delete</p>
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="px-[32px] py-4">
