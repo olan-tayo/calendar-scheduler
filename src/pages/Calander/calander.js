@@ -315,7 +315,7 @@ const Calander = () => {
               </div>
 
               {/* ADD APPOINTMENTS */}
-              <div className="cursor-pointer bg-black text-sm text-white h-[34px] rounded-[40px] border-black border-[1px] w-[80px] px-[9px] flex gap-[15px] items-center">
+              <div className="cursor-pointer bg-black text-sm text-white h-[34px] rounded-[40px] border-black border-[1px] w-[100px] px-[15px] flex justify-between items-center">
                 <p>Add</p>
                 <ExpandMore style={{ fontSize: "20px", fontWeight: 400 }} />
               </div>
